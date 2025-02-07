@@ -4,7 +4,7 @@
   "private": true,
   "main":"app.js",
   "engines": {
-    "node": "14.x"
+    "node": "22.x"
   },
   "scripts": {
     "start": "env-cmd -f ./env/.env nodemon ./bin/www",
