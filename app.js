@@ -58,8 +58,8 @@ app.use((req, res, next) => {
 
   if (req.cookies.authToken) {
     res.cookie("authToken", req.cookies.authToken, {
-      httpOnly: true,
-      secure: false, // 🔹 Mets `true` si tu es en HTTPS
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production', // Utiliser 'secure: true' uniquement en production (HTTPS)
       sameSite: "lax",
     });
   } else {
@@ -93,6 +93,8 @@ app.use(async (req, res, next) => {
   console.log("✅ Utilisateur stocké dans res.locals :", res.locals.user);
   next();
 });
+
+
 
 // Routes API protégées
 app.use('/api/catways', checkJWT, catwaysRouter);
