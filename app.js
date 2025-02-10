@@ -12,6 +12,7 @@ const mongodb = require('./db/mongo');
 const { checkJWT } = require('./scripts/auth');
 const jwt = require('jsonwebtoken');
 const User = require('./models/user'); // Import du modèle utilisateur
+const serverless = require('serverless-http'); // Import de serverless-http
 
 // Initialisation de la connexion MongoDB
 mongodb.initClientDbConnection();
@@ -133,7 +134,7 @@ app.post('/login', async (req, res) => {
 
     res.cookie('authToken', `Bearer ${token}`, {
       httpOnly: true,
-      secure: false, // ❗ Mets `true` si en HTTPS
+      secure: true, // ❗ Mets `true` si en HTTPS
       sameSite: "lax"
     });
 
@@ -226,4 +227,4 @@ app.get('/get-token', (req, res) => {
   res.json({ token });
 });
 
-module.exports = app;
+module.exports.handler = serverless(app);

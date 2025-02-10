@@ -1,15 +1,15 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "app.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "app.js"
-      }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/api.js",  
+      "use": "@vercel/node"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "API_URL": "https://use-new-url-parser-main.vercel.app/",
+    "URL_MONGO": "mongodb+srv://user:password@cluster.mongodb.net/dbname?retryWrites=true&w=majority",
+    "SECRET_KEY": "GTGh6rdP54GT76"
   }
+}
