@@ -5,7 +5,6 @@ const cors = require('cors');
 const path = require('path'); // Pour gérer les chemins de fichiers
 const axios = require('axios'); // Pour consommer l'API
 const userRouter = require('./routes/users');
-const indexRouter = require('./routes/index');
 const catwaysRouter = require('./routes/catways');
 const reservationsRouter = require('./routes/reservations');
 const mongodb = require('./db/mongo');
@@ -45,7 +44,7 @@ app.use(
   cors({
     exposedHeaders: ['Authorization'],
     origin: '*',
-    credentials: true // ✅ Permet l'envoi des cookies avec les requêtes
+    credentials: true, // ✅ Permet l'envoi des cookies avec les requêtes
   })
 );
 
@@ -59,7 +58,7 @@ app.use((req, res, next) => {
 
   if (req.cookies.authToken) {
     res.cookie("authToken", req.cookies.authToken, {
-      httpOnly: true, 
+      httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Utiliser 'secure: true' uniquement en production (HTTPS)
       sameSite: "lax",
     });
@@ -95,8 +94,6 @@ app.use(async (req, res, next) => {
   next();
 });
 
-
-
 // Routes API protégées
 app.use('/api/catways', checkJWT, catwaysRouter);
 app.use('/api/reservations', checkJWT, reservationsRouter);
@@ -122,7 +119,6 @@ app.get('/register', (req, res) => {
 app.get('/utilisateurs', (req, res) => {
   res.render('utilisateurs', { title: 'Gestion des Utilisateurs' });
 });
-
 
 // Route pour gérer la connexion
 app.post('/login', async (req, res) => {
@@ -206,7 +202,8 @@ app.get('/reservations', checkJWT, async (req, res) => {
     res.status(500).render('500', { title: 'Erreur Serveur', message: 'Une erreur inattendue s\'est produite. Veuillez réessayer plus tard.' });
   }
 });
-//route documentation
+
+// Route documentation
 app.get('/documentation', checkJWT, (req, res) => {
   res.render('documentation', { title: 'Documentation' });
 });
@@ -227,4 +224,5 @@ app.get('/get-token', (req, res) => {
   res.json({ token });
 });
 
+// Exporte l'application Express pour Serverless
 module.exports.handler = serverless(app);
